@@ -18,6 +18,7 @@ fn main() {
     let listner = TcpListener::bind("127.0.0.1:7878").unwrap();
     let pool = ThreadPool::new(4);
 
+
     for stream in listner.incoming() {
         let stream = stream.unwrap();
         
@@ -34,15 +35,13 @@ fn handle_connection(mut stream: TcpStream) {
         .unwrap()
         .unwrap();
 
-    println!("{:?}",http_request);
-
     let (status_line, filename) = match &http_request[..] {
-        "GET / HTTP/1.1" => ("HTTP/1.1 200 OK","/home/arvind/Desktop/Dev/Rust/hello/hello.html"),
+        "GET / HTTP/1.1" => ("HTTP/1.1 200 OK","/home/arvind/Desktop/Dev/Rust/multi-threaded_web_server/html/hello.html"),
         "GET /sleep HTTP/1.1" => {
             thread::sleep(time::Duration::from_secs(5));
-            ("HTTP/1.1 200 OK","/home/arvind/Desktop/Dev/Rust/hello/hello.html")
+            ("HTTP/1.1 200 OK","/home/arvind/Desktop/Dev/Rust/multi-threaded_web_server/html/hello.html")
         },
-        _ => ("HTTP/1.1 404 NOT FOUND","/home/arvind/Desktop/Dev/Rust/hello/404.html")
+        _ => ("HTTP/1.1 404 NOT FOUND","/home/arvind/Desktop/Dev/Rust/multi-threaded_web_server/html/404.html")
     };
 
     let content = fs::read_to_string(filename).unwrap();
